@@ -1,6 +1,6 @@
 {
-  "appId": "io.ionic.starter",
-  "appName": "loginApp",
+  "appId": "ar.com.github.securum",
+  "appName": "securum",
   "bundledWebRuntime": false,
   "npmClient": "npm",
   "webDir": "www",

@@ -23,6 +23,10 @@ const routes: Routes = [
     path:'',
     redirectTo:'/login',
     pathMatch:'full'
+  },
+  {
+    path: 'splash',
+    loadChildren: () => import('./splash/splash.module').then( m => m.SplashPageModule)
   }
 ];
 @NgModule({

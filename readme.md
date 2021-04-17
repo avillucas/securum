@@ -11,3 +11,8 @@
 1. `adb devices` 
 2. `ionic capacitor run android --livereload --external`
 3. `ionic capacitor run android --livereload --external --public-host=192.168.0.32`
+## Cambiar el id en todos 
+* android/app/buil.gradle
+* capacitor.config.json
+* https://developer.android.com/studio/build/application-id
+* https://capacitorjs.com/docs/android/configuration
