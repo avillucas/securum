@@ -24,10 +24,15 @@ const routes: Routes = [
     redirectTo:'/login',
     pathMatch:'full'
   },
+  { 
+    path: 'activacion',
+    loadChildren: () => import('./activacion/activacion.module').then( m => m.ActivacionPageModule),
+    canLoad:[AuthGuard],
+  },
   {
     path: 'splash',
     loadChildren: () => import('./splash/splash.module').then( m => m.SplashPageModule)
-  }
+  }  
 ];
 @NgModule({
   imports: [

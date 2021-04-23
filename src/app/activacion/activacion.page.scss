@@ -1,0 +1,27 @@
+@media screen and (orientation:portrait) {    
+    ion-img{    
+        height: 43vh;
+        margin: 10vh 0 ;
+        padding: 10%;
+    }
+}
+@media screen and (orientation:landscape) {
+    ion-img{  
+        height: 49vh;
+        margin: 13% 17%;        
+        width: 69%;
+    }
+}
+
+ion-button {    
+    height: 10vh;
+    margin-top: 4vh;
+}
+
+h1{
+    font-weight: bold;
+    font-size: 1em;
+    text-align: center;
+    text-transform: uppercase;
+}
+
