@@ -62,6 +62,7 @@ export class AudioService {
     } else {
 
       this.audioPlayer.src = soundToPlay.asset;
+      this.audioPlayer.loop = false;
       this.audioPlayer.play();
 
     }
