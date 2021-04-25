@@ -45,6 +45,29 @@ export class AudioService {
 
   }
 
+  play(key: string): void {
+
+    let soundToPlay = this.sounds.find((sound) => {
+      return sound.key === key;
+    });
+
+    if(soundToPlay.isNative){
+
+      this.nativeAudio.play(soundToPlay.asset).then((res) => {
+        console.log(res);
+      }, (err) => {
+        console.log(err);
+      });
+
+    } else {
+
+      this.audioPlayer.src = soundToPlay.asset;
+      this.audioPlayer.play();
+
+    }
+
+  }
+
   loop(key: string): void {
 
     let soundToPlay = this.sounds.find((sound) => {
@@ -60,10 +83,9 @@ export class AudioService {
       });
 
     } else {
-
       this.audioPlayer.src = soundToPlay.asset;
-      this.audioPlayer.loop();
-
+      this.audioPlayer.loop = true;
+      this.audioPlayer.play();
     }
 
   }

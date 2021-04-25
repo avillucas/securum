@@ -20,6 +20,10 @@ export class ActivacionPage implements OnInit {
   protected passwordCorrect:string ;
   ionicForm: FormGroup;
 
+
+  readonly ALARM_PLAY = 'alarma-activa';
+  readonly ALARM_STOP = 'alarma-desactivar'
+
   constructor(
     public alarmaService:AlarmaService,
     private animationCtrl: AnimationController,            
@@ -33,9 +37,12 @@ export class ActivacionPage implements OnInit {
     this.hideLogin = true;
     //@todo persistirlo en storage hasheado
     this.passwordCorrect = 'xxxx';
-  }  
+  }  ;
 
-  
+  ngAfterViewInit() {
+    this.audio.preload(this.ALARM_PLAY, 'assets/sonidos/alarma-activa.mp3');
+    this.audio.preload(this.ALARM_STOP, 'assets/sonidos/alarma-desactivar.mp3');
+  }
 
   activar() {       
     this.hideLogin = true;
@@ -45,13 +52,13 @@ export class ActivacionPage implements OnInit {
     .iterations(Infinity)
     .fromTo('opacity', '1', '0.2')                      
     this.animation.play(); 
-    this.audio.loop('alarma-activa');   
+    this.audio.loop(this.ALARM_PLAY);   
   }
   
   desactivar(){
     this.animation.stop()
-    this.audio.stop('alarma-activa');
-    this.audio.play('alarma-desactivar');   
+    this.audio.stop(this.ALARM_PLAY);
+    this.audio.play(this.ALARM_STOP);   
   }
   
   cambiarEstadoAlarma(){    
