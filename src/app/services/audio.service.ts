@@ -10,6 +10,14 @@ import { NativeAudio } from '@ionic-native/native-audio/ngx';
 export class AudioService {
 
  
+
+  readonly ALARM_PLAY = 'alarma-activa';
+  readonly ALARM_DERECHA = 'derecha';
+  readonly ALARM_IZQUIERDA = 'izquierda';
+  readonly ALARM_ARRIBA = 'arriba';  
+  readonly ALARM_STOP = 'alarma-desactivar'
+
+
   private sounds: Sound[] = [];
   private audioPlayer: HTMLAudioElement = new Audio();
   private forceWebAudio: boolean = true;
@@ -18,7 +26,35 @@ export class AudioService {
 
   }
 
-  preload(key: string, asset: string): void {
+  stop(key:string){
+    this._stop(key);
+  }
+
+  preload(){
+      this._preload(this.ALARM_PLAY, 'assets/sonidos/alarma-activa.mp3');
+      this._preload(this.ALARM_STOP, 'assets/sonidos/arriba.mp4');
+      this._preload(this.ALARM_DERECHA, 'assets/sonidos/derecha.mp4');
+      this._preload(this.ALARM_IZQUIERDA, 'assets/sonidos/izquierda.mp4');
+      this._preload(this.ALARM_ARRIBA, 'assets/sonidos/alarma-desactivar.mp3');      
+  }
+
+  sonarDerecha(){
+    this._loop(this.ALARM_DERECHA);
+  }
+
+  sonarIzquierda(){
+    this._loop(this.ALARM_IZQUIERDA);
+  }
+
+  sonarAlarma(){
+    this._loop(this.ALARM_PLAY);
+  }
+
+  sonarDesactivacion(){
+    this._play(this.ALARM_STOP);
+  }
+
+  protected _preload(key: string, asset: string): void {
 
     if(this.platform.is('cordova') && !this.forceWebAudio){
 
@@ -45,7 +81,7 @@ export class AudioService {
 
   }
 
-  play(key: string): void {
+  protected _play(key: string): void {
 
     let soundToPlay = this.sounds.find((sound) => {
       return sound.key === key;
@@ -69,7 +105,7 @@ export class AudioService {
 
   }
 
-  loop(key: string): void {
+  protected _loop(key: string): void {
 
     let soundToPlay = this.sounds.find((sound) => {
       return sound.key === key;
@@ -91,8 +127,7 @@ export class AudioService {
 
   }
 
-
-  stop(key: string): void {
+  protected _stop(key: string): void {
 
     let soundToPlay = this.sounds.find((sound) => {
       return sound.key === key;

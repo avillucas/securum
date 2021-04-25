@@ -15,6 +15,9 @@ import { AngularFireAuthModule } from '@angular/fire/auth';
 import { IonicStorageModule } from '@ionic/storage-angular';
 import { HttpClientModule } from '@angular/common/http';
 import { NativeAudio } from '@ionic-native/native-audio/ngx';
+import { DeviceMotion } from '@ionic-native/device-motion/ngx';
+import { Flashlight } from '@ionic-native/flashlight/ngx';
+import { Vibration } from '@ionic-native/vibration/ngx';
 
 @NgModule({
   declarations: [AppComponent],
@@ -29,7 +32,7 @@ import { NativeAudio } from '@ionic-native/native-audio/ngx';
     IonicStorageModule.forRoot(),
     HttpClientModule,
   ],
-  providers: [{ provide: RouteReuseStrategy, useClass: IonicRouteStrategy }, NativeAudio],
+  providers: [{ provide: RouteReuseStrategy, useClass: IonicRouteStrategy }, NativeAudio,DeviceMotion, Flashlight, Vibration],
   bootstrap: [AppComponent],
 })
 export class AppModule {}
