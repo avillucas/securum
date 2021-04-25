@@ -4,6 +4,7 @@ import { Animation, AnimationController, ModalController, ToastController, Loadi
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { AuthapiService } from '../services/authapi.service';
 import { Router } from '@angular/router';
+import { AudioService } from '../services/audio.service';
 
 @Component({
   selector: 'app-activacion',
@@ -26,7 +27,8 @@ export class ActivacionPage implements OnInit {
     public toastController: ToastController,
     private loadingController: LoadingController,
     private authService: AuthapiService,
-    public router:Router,
+    public router:Router,    
+    public audio:AudioService
   ) {        
     this.hideLogin = true;
     //@todo persistirlo en storage hasheado
@@ -42,11 +44,14 @@ export class ActivacionPage implements OnInit {
     .duration(300)
     .iterations(Infinity)
     .fromTo('opacity', '1', '0.2')                      
-    this.animation.play();    
+    this.animation.play(); 
+    this.audio.loop('alarma-activa');   
   }
   
   desactivar(){
     this.animation.stop()
+    this.audio.stop('alarma-activa');
+    this.audio.play('alarma-desactivar');   
   }
   
   cambiarEstadoAlarma(){    
@@ -61,11 +66,11 @@ export class ActivacionPage implements OnInit {
     }
   }  
   
-  async presentToast(message:string) {
+  async presentToast(message:string, color:string) {
     const toast = await this.toastController.create({
       message,
       duration: 1500,
-      color: 'danger',
+      color:color,
       position: 'top'
     });
     toast.present();
@@ -84,7 +89,7 @@ export class ActivacionPage implements OnInit {
   async login() {
     //    
     if (!this.ionicForm.valid) {
-      this.presentToast('Por favor revise los datos ingresados.');      
+      this.presentToast('Por favor revise los datos ingresados.', 'danger');      
     } else {
       const loading = await this.loadingController.create();
       await loading.present();
@@ -92,14 +97,14 @@ export class ActivacionPage implements OnInit {
       const postData : {  password:string }  = this.ionicForm.value;
       if(this.passwordCorrect == postData.password){
         await loading.dismiss();
-        this.presentToast('¡La alarma fue desactivada!');
+        this.presentToast('¡La alarma fue desactivada!','success');
         this.hideLogin = true;
         this.alarmaService.desactivar();
         this.desactivar();
         return true;
       }else{
         await loading.dismiss();
-        await this.presentToast('La contraseña es incorrecta.');
+        await this.presentToast('La contraseña es incorrecta.','danger');
       }     
     }
     return false;
