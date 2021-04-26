@@ -68,26 +68,30 @@ export class AlarmaService {
   activar(){    
     this._activa = true;
     //poner el sensor a revisar
-    this._sensor = this.motion.watch().subscribe(this.sensar);
+    console.log('activando sensor ....')    ;
+    this._sensor = this.motion.watch().subscribe((acceleration: DeviceMotionAccelerationData) => {
+      console.info(this.motion);            
+      const sentido  = this.motion.determinarMovimiento(acceleration);
+      //si se modifico en el ultimo momento     
+      if(sentido.modificada){          
+        console.log('se movio ....')    ;     
+        if(!this._sonando){        
+          this.sonar();
+          this.motion.iniciarSensado()
+        }      
+        this.cambiarSentido(sentido);                                          
+      }    
+    },error=>{console.error('Error',error)});
   }
 
   /**
    * Determina si se modifico en de laguna forma la posicion para dispara la alarma
    * @param Posicion acceleration Cambio de datos
    */
-  protected sensar (acceleration: DeviceMotionAccelerationData) {      
-    const sentido  = this.motion.determinarMovimiento(acceleration);                  
-    //si se modifico en el ultimo momento 
-    console.log('sensando ....')    ;
-    if(sentido.modificada){          
-      console.log('se movio ....')    ;     
-      if(!this._sonando){        
-        this.sonar();
-      }      
-      this.cambiarSentido(sentido);                                          
-    }    
+   sensar (acceleration: DeviceMotionAccelerationData) {      
+   
   }
-
+  
   protected probarMovimiento(sentido:Posicion){
     this.sonar();    
     this.cambiarSentido(sentido);

@@ -46,10 +46,10 @@
 <ion-footer class="ion-no-border">
   <!-- -->
   <ion-buttons [hidden]="!alarmaService.ocultarMensajeActivar" >
-    <ion-button (click)="alarmaService.probarMovimientoVerticalDerecha()"> Vertical derecha</ion-button>
-    <ion-button (click)="alarmaService.probarMovimientoVerticalIzquierda()"> Vertical izquierda</ion-button>
-    <ion-button (click)="alarmaService.probarMovimientoHorizontalDerecha()"> Horizontal derecha</ion-button>
-    <ion-button (click)="alarmaService.probarMovimientoHorizontalIzquierda()"> Horizontal izquierda</ion-button>
+    <ion-button (click)="alarmaService.probarMovimientoVerticalDerecha()">VD</ion-button>
+    <ion-button (click)="alarmaService.probarMovimientoVerticalIzquierda()">VI</ion-button>
+    <ion-button (click)="alarmaService.probarMovimientoHorizontalDerecha()">HD</ion-button>
+    <ion-button (click)="alarmaService.probarMovimientoHorizontalIzquierda()">HI</ion-button>
   </ion-buttons>
   <!-- -->
   <ion-button  [hidden]="alarmaService.sonando" (click)="logout()" color="primary" expand="full">

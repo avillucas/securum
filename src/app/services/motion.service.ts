@@ -13,23 +13,23 @@ export class MotionService {
   private actualX: number;
   private actualY: number;
   private actualZ: number;
-  // 
-  readonly QUIETO = 'quieto';
-  readonly DERECHA = 'derecha';
-  readonly IZQUIERDA = 'izquierda';
-  readonly VERTICAL = 'vertical';
-  readonly HORIZONTAL = 'horizontal';
-  //
-  readonly ARRIBA = 'arriba';
-  readonly ABAJO = 'abajo';      
+  //   
+  public readonly DERECHA = 'derecha';
+  public readonly IZQUIERDA = 'izquierda';
+  public readonly VERTICAL = 'vertical';
+  public readonly HORIZONTAL = 'horizontal';
   //
   constructor(private deviceMotion: DeviceMotion) { 
+  }
+  
+  public iniciarSensado(){
       // Get the device current acceleration
       this.deviceMotion.getCurrentAcceleration().then(
         (acceleration: DeviceMotionAccelerationData) => {
           this.actualX = acceleration.x;
           this.actualY = acceleration.y;
           this.actualZ = acceleration.z;
+          console.log('x:',this.actualX,'y:',this.actualY,'z:',this.actualZ);
         },
         (error: any) => this.handleError
       );
@@ -58,16 +58,16 @@ export class MotionService {
 
   determinarMovimiento(acceleration: DeviceMotionAccelerationData):Posicion{
     let posicion:Posicion = {vertical:this.HORIZONTAL, horizontal:null, modificada:false};
+    console.log('x:',this.actualX,'y:',this.actualY,'z:',this.actualZ);
     if(
       this.actualX.toFixed(5) != acceleration.x.toFixed(5)  ||
       this.actualY.toFixed(5) != acceleration.y.toFixed(5) ||
       this.actualZ.toFixed(5) != acceleration.z.toFixed(5) 
-    ){
+    ){      
       posicion.modificada = true;
       if(this.actualZ < acceleration.z ){
         posicion.vertical = this.HORIZONTAL;
       }
-
       if(this.actualZ > acceleration.z ){
         posicion.vertical =  this.VERTICAL;
       }
