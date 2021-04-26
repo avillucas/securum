@@ -6,14 +6,24 @@ import { Flashlight } from '@ionic-native/flashlight/ngx';
 })
 export class FlashService {
 
-  constructor(private flashlight: Flashlight) { }
+  protected prendido:boolean;
+
+  constructor(private flashlight: Flashlight) { 
+    this.prendido = false;
+  }
 
   on(){
-    this.flashlight.switchOn();
+    if(!this.prendido){
+      this.flashlight.switchOn(); 
+      this.prendido = true;
+    }
   }
 
   off(){
-    this.flashlight.switchOff();
+    if(this.prendido){
+      this.flashlight.switchOff();
+      this.prendido = false;
+    }
   }
 
   on5Minutes(){

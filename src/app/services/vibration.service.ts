@@ -7,19 +7,31 @@ import { Vibration } from '@ionic-native/vibration/ngx';
 })
 export class VibrationService {
 
-  constructor(private vibration: Vibration) { }
+  protected vibrando:boolean;
+
+  constructor(private vibration: Vibration) { 
+    this.vibrando = false;
+  }
 
   on(){
-    this.vibration.vibrate(1000)
+    if(!this.vibrando){
+      this.vibration.vibrate(1000)
+      this.vibrando = true;
+    }
   }
 
   off(){
-    this.vibration.vibrate(0)
+    if(this.vibrando){
+      this.vibration.vibrate(0)
+      this.vibrando = false;
+    }
   }
   
   on5Minutes(){
-    this.on();
-    setTimeout( ()=>this.off(),3000);
+    if(!this.vibrando){
+      this.on();
+      setTimeout( ()=>this.off(),18000);
+    }
   }
 
 }

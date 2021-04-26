@@ -6,7 +6,7 @@
   "webDir": "www",
   "linuxAndroidStudioPath": "/opt/android-studio/bin/studio.sh",
   "plugins": {
-     "SplashScreen": {
+    "SplashScreen": {
       "launchShowDuration": 0,
       "launchAutoHide": true,
       "backgroundColor": "#000000",
@@ -20,5 +20,9 @@
       "splashImmersive": true
     }
   },
-  "cordova": {}
+  "cordova": {},
+  "server": {
+    "url": "http://192.168.0.32:8100",
+    "cleartext": true
+  }
 }

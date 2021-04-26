@@ -12,12 +12,29 @@ const {Storage} = Plugins;
 export class AuthapiService {
 
   isAuthenticated : BehaviorSubject<boolean>= new BehaviorSubject<boolean>(null);
-  token = '';  
+  token:string;  
+  pass:string;
 
   constructor(
     private httpService: HttpService    
   ) {
+    this.pass = '';
+    this.token = '';
     this.loadToken();
+    this.loadPass();
+  }
+
+  comparePassword(password:string):boolean{
+    return (this.pass == password);
+  }
+  
+  async loadPass(){
+    const pass = await Storage.get({ key: AuthConstants.PASS });    
+    if (pass && pass.value) {  
+      this.pass = pass.value;      
+    } else {
+      this.isAuthenticated.next(false);
+    }
   }
 
   async loadToken(){
@@ -36,12 +53,23 @@ export class AuthapiService {
       map( (data:any) =>  data.token),
       switchMap(
         token=>{ 
+          //@todo reemplazar esto con la respuesta del punto 
+          Storage.set({key: AuthConstants.PASS, value: 'xxxx'});
           return from(Storage.set({key: AuthConstants.AUTH, value: token}));                     
       }),
       tap( () => {
           this.isAuthenticated.next(true);
       })
-    );    
+    );   
+    
+    /*.pipe(
+      map( (data:any) =>  data.passCode),
+      switchMap(
+        passCode=>{           
+          return from(Storage.set({key: AuthConstants.PASS, value: passCode}));                     
+      })
+    );  
+    */  
   }
 
   register(postData: {username:string, password:string}): Observable<any> { 

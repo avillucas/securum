@@ -1,5 +1,5 @@
 <ion-content>
-  <ion-grid [hidden]=hideLogin >
+  <ion-grid [hidden]=alarmaService.hideLogin >
     <ion-row>
       <ion-col >
         <h1>Colocá tu contraseña de usuario para desactivar la alarma</h1>
@@ -25,27 +25,34 @@
     </ion-row>
   </ion-grid>
   <ion-grid>   
-    <ion-row [hidden]=alarmaService.estaSonando >
+    <ion-row [hidden]="alarmaService.ocultarMensajeActivar" >
       <ion-col >
         <h1>¡Presioná la sirena para activar la alarma!</h1>
       </ion-col>
     </ion-row>
-    <ion-row [hidden]="!alarmaService.estaSonando || !hideLogin" >
+    <ion-row [hidden]="alarmaService.ocultarMensajeADesactivarSirena" >
       <ion-col >
         <h1>¡Presioná la sirena para desactivar la alarma!</h1>
       </ion-col>
     </ion-row>
     <ion-row>
       <ion-col>        
-        <ion-img #sirena [src]="alarmaService.asset()"  color="none" alt="Estado" (click)="cambiarEstadoAlarma()" ></ion-img>        
+        <ion-img #sirena src="assets/sirena.png"  color="none" alt="Estado" (click)="cambiarEstadoAlarma()" ></ion-img>        
       </ion-col>
     </ion-row>
   </ion-grid>
 </ion-content>
 
 <ion-footer class="ion-no-border">
-  
-  <ion-button  [hidden]="alarmaService.estaSonando" (click)="logout()" color="primary" expand="full">
+  <!-- -->
+  <ion-buttons [hidden]="!alarmaService.ocultarMensajeActivar" >
+    <ion-button (click)="alarmaService.probarMovimientoVerticalDerecha()"> Vertical derecha</ion-button>
+    <ion-button (click)="alarmaService.probarMovimientoVerticalIzquierda()"> Vertical izquierda</ion-button>
+    <ion-button (click)="alarmaService.probarMovimientoHorizontalDerecha()"> Horizontal derecha</ion-button>
+    <ion-button (click)="alarmaService.probarMovimientoHorizontalIzquierda()"> Horizontal izquierda</ion-button>
+  </ion-buttons>
+  <!-- -->
+  <ion-button  [hidden]="alarmaService.sonando" (click)="logout()" color="primary" expand="full">
     <ion-icon name="log-out-outline"></ion-icon>
     <ion-label>Cerrar</ion-label>
   </ion-button>

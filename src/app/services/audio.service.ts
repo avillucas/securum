@@ -26,31 +26,43 @@ export class AudioService {
 
   }
 
-  stop(key:string){
-    this._stop(key);
+  desactivar(){
+    this._stop(this.ALARM_PLAY);
+    this._stop(this.ALARM_DERECHA);
+    this._stop(this.ALARM_IZQUIERDA);
+    this._stop(this.ALARM_ARRIBA);    
   }
 
   preload(){
       this._preload(this.ALARM_PLAY, 'assets/sonidos/alarma-activa.mp3');
-      this._preload(this.ALARM_STOP, 'assets/sonidos/arriba.mp4');
+      this._preload(this.ALARM_STOP, 'assets/sonidos/alarma-desactivar.mp3');
       this._preload(this.ALARM_DERECHA, 'assets/sonidos/derecha.mp4');
       this._preload(this.ALARM_IZQUIERDA, 'assets/sonidos/izquierda.mp4');
-      this._preload(this.ALARM_ARRIBA, 'assets/sonidos/alarma-desactivar.mp3');      
+      this._preload(this.ALARM_ARRIBA, 'assets/sonidos/arriba.mp4');      
   }
 
   sonarDerecha(){
+    this._stop(this.ALARM_IZQUIERDA);
+    this._stop(this.ALARM_PLAY);
     this._loop(this.ALARM_DERECHA);
   }
 
   sonarIzquierda(){
+    this._stop(this.ALARM_DERECHA);
+    this._stop(this.ALARM_PLAY);
     this._loop(this.ALARM_IZQUIERDA);
   }
 
   sonarAlarma(){
+    this._stop(this.ALARM_DERECHA);
+    this._stop(this.ALARM_IZQUIERDA);
     this._loop(this.ALARM_PLAY);
   }
 
   sonarDesactivacion(){
+    this._stop(this.ALARM_DERECHA);
+    this._stop(this.ALARM_PLAY);
+    this._stop(this.ALARM_IZQUIERDA);    
     this._play(this.ALARM_STOP);
   }
 
