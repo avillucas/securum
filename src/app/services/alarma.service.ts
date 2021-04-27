@@ -67,6 +67,7 @@ export class AlarmaService {
   */
   activar(){    
     this._activa = true;
+    this.motion.iniciarSensado();
     //poner el sensor a revisar
     console.log('activando sensor ....')    ;
     this._sensor = this.motion.watch().subscribe((acceleration: DeviceMotionAccelerationData) => {
