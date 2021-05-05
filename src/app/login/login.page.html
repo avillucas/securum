@@ -33,41 +33,17 @@
   </ion-row>
 </ion-content>
 
-<ion-footer  class="ion-no-border ion-text-center ">
-  <!--
-  <ion-toolbar >
-    <ion-title>Accesos</ion-title>
-    <ion-grid id="usuarios" >    
-      <ion-row >
-        <ion-col>
-          <ion-button type="button" expand="block" color="tertiary" (click)="loadAdmin()" >Admin</ion-button>           
-        </ion-col>             
-       <ion-col>
-         <ion-button type="button" expand="block" color="tertiary" (click)="loadInvitado()"  >Invitado</ion-button>           
-       </ion-col>            
-       <ion-col>
-         <ion-button type="button" expand="block" color="tertiary"(click)="loadUsuario()"  >Usuario</ion-button>           
-       </ion-col>    
-       <ion-col>
-         <ion-button type="button" expand="block" color="tertiary" (click)="loadAnonimo()"  >Anónimo</ion-button>           
-       </ion-col>    
-       <ion-col>
-         <ion-button type="button" expand="block" color="tertiary" (click)="loadTester()" >Tester</ion-button>           
-       </ion-col>    
-     </ion-row>
-    </ion-grid>    
-  </ion-toolbar>
--->
-<ion-list>
-  <ion-item>
-    <ion-label>Accesos predeterminados</ion-label>
-    <ion-select  [(ngModel)]="tester" (ionChange)="selectedTester(tester)" okText="Seleccionar" cancelText="Cancelar">
-      <ion-select-option value="admin"  >ADMIN</ion-select-option>
-      <ion-select-option value="invitado" >INIVITADO</ion-select-option>
-      <ion-select-option value="usuario" >USUARIO</ion-select-option>
-      <ion-select-option value="anonimo" >ANONIMO</ion-select-option>
-      <ion-select-option value="tester"  >TESTER</ion-select-option>
-    </ion-select>
-  </ion-item>
+<ion-footer  class="ion-no-border ion-text-center "> 
+  <ion-list>
+    <ion-item>
+      <ion-label>Accesos predeterminados</ion-label>
+      <ion-select  [(ngModel)]="tester" (ionChange)="selectedTester(tester)" okText="Seleccionar" cancelText="Cancelar">
+        <ion-select-option value="admin"  >ADMIN</ion-select-option>
+        <ion-select-option value="invitado" >INIVITADO</ion-select-option>
+        <ion-select-option value="usuario" >USUARIO</ion-select-option>
+        <ion-select-option value="anonimo" >ANONIMO</ion-select-option>
+        <ion-select-option value="tester"  >TESTER</ion-select-option>
+      </ion-select>
+    </ion-item>
   </ion-list>
 </ion-footer>

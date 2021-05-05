@@ -3,8 +3,8 @@ import { BehaviorSubject, from, Observable } from 'rxjs';
 import { HttpService } from './http.service';
 import { AuthConstants } from '../config/auth-constants';
 import {map, tap, switchMap } from 'rxjs/operators';
-import { Plugins } from '@capacitor/core';
-const {Storage} = Plugins;
+import { StorageService } from './storage.service';
+import { LoginResponse } from '../entities/loginResponse';
 
 @Injectable({
   providedIn: 'root'
@@ -12,64 +12,44 @@ const {Storage} = Plugins;
 export class AuthapiService {
 
   isAuthenticated : BehaviorSubject<boolean>= new BehaviorSubject<boolean>(null);
-  token:string;  
-  pass:string;
+  token = '';  
 
   constructor(
-    private httpService: HttpService    
+    private httpService: HttpService    ,
+    private storageService:StorageService
   ) {
-    this.pass = '';
-    this.token = '';
     this.loadToken();
-    this.loadPass();
   }
 
-  comparePassword(password:string):boolean{
-    return (this.pass == password);
-  }
-  
-  async loadPass(){
-    const pass = await Storage.get({ key: AuthConstants.PASS });    
-    if (pass && pass.value) {  
-      this.pass = pass.value;      
-    } else {
-      this.isAuthenticated.next(false);
-    }
-  }
-
-  async loadToken(){
-    const token = await Storage.get({ key: AuthConstants.AUTH });    
-    if (token && token.value) {
-      console.log('set token: ', token.value);
-      this.token = token.value;
+  async loadToken(){     
+    const token = await this.storageService.get(AuthConstants.AUTH);    
+    if (token ) {      
+      this.token = token;
       this.isAuthenticated.next(true);
     } else {
       this.isAuthenticated.next(false);
     }
   }
 
+  async comparePassword(password:string){
+    const pass = await this.storageService.get(AuthConstants.ADMIN_CODE);
+    return pass == password;
+  }
+
   login(postData : { username:string , password:string } ): Observable<any> {  
     return  this.httpService.post(AuthConstants.LOGIN_PATH, postData).pipe(
-      map( (data:any) =>  data.token),
+      map( (data:LoginResponse) =>  data),
       switchMap(
-        token=>{ 
-          //@todo reemplazar esto con la respuesta del punto 
-          Storage.set({key: AuthConstants.PASS, value: 'xxxx'});
-          return from(Storage.set({key: AuthConstants.AUTH, value: token}));                     
-      }),
+        (data:LoginResponse)=>{ 
+          return from(
+            this.storageService.setLoginData(data)
+          );                     
+        }
+      ),
       tap( () => {
           this.isAuthenticated.next(true);
       })
-    );   
-    
-    /*.pipe(
-      map( (data:any) =>  data.passCode),
-      switchMap(
-        passCode=>{           
-          return from(Storage.set({key: AuthConstants.PASS, value: passCode}));                     
-      })
-    );  
-    */  
+    );    
   }
 
   register(postData: {username:string, password:string}): Observable<any> { 
@@ -78,7 +58,7 @@ export class AuthapiService {
 
   logout() {
     this.isAuthenticated.next(false);
-    return Storage.remove({key: AuthConstants.AUTH});    
+    return this.storageService.remove(AuthConstants.AUTH);
   }
 
 }

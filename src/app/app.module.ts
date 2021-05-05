@@ -13,11 +13,12 @@ import { environment } from '../environments/environment';
 import { AngularFirestoreModule } from '@angular/fire/firestore';
 import { AngularFireAuthModule } from '@angular/fire/auth';
 import { IonicStorageModule } from '@ionic/storage-angular';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { NativeAudio } from '@ionic-native/native-audio/ngx';
 import { DeviceMotion } from '@ionic-native/device-motion/ngx';
 import { Flashlight } from '@ionic-native/flashlight/ngx';
 import { Vibration } from '@ionic-native/vibration/ngx';
+import { TokenInterceptor } from './interceptor/token';
 
 @NgModule({
   declarations: [AppComponent],
@@ -32,7 +33,14 @@ import { Vibration } from '@ionic-native/vibration/ngx';
     IonicStorageModule.forRoot(),
     HttpClientModule,
   ],
-  providers: [{ provide: RouteReuseStrategy, useClass: IonicRouteStrategy }, NativeAudio,DeviceMotion, Flashlight, Vibration],
+  providers: [
+    { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },     
+    NativeAudio,
+    DeviceMotion, 
+    Flashlight, 
+    Vibration,
+    { provide: HTTP_INTERCEPTORS, useClass: TokenInterceptor, multi:true},
+  ],
   bootstrap: [AppComponent],
 })
 export class AppModule {}

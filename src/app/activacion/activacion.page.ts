@@ -49,7 +49,7 @@ export class ActivacionPage implements OnInit {
 
   ngOnInit() {
     this.ionicForm = this.formBuilder.group({   
-      password: ['xxxx', [Validators.required, Validators.minLength(4)]],
+      password: ['1111', [Validators.required, Validators.minLength(4)]],
     })
   } 
 
