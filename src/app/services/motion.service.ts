@@ -1,95 +1,134 @@
 import { Injectable } from '@angular/core';
+import { MotionEventResult, MotionOrientationEventResult, PluginListenerHandle, Plugins } from '@capacitor/core';
 import { DeviceMotion, DeviceMotionAccelerationData } from '@ionic-native/device-motion/ngx';
 import { Observable } from 'rxjs';
-import { Posicion } from '../entities/posicion';
+import { Movement } from '../entities/movement';
+import { VerticalDirection, HorizontalDirection } from '../entities/direction.enum';
+import { AlertController } from '@ionic/angular';
 
 @Injectable({
   providedIn: 'root'
 })
 export class MotionService {
-
-  private subscription:Observable<DeviceMotionAccelerationData>;
+  
+  public actualAlpha: string;
+  public actualBeta: string;
+  public actualGamma: string;
+  public actualPosicion:Movement;
   //
-  private actualX: number;
-  private actualY: number;
-  private actualZ: number;
-  //   
-  public readonly DERECHA = 'derecha';
-  public readonly IZQUIERDA = 'izquierda';
-  public readonly VERTICAL = 'vertical';
-  public readonly HORIZONTAL = 'horizontal';
-  //
-  constructor(private deviceMotion: DeviceMotion) { 
+  constructor(
+    private deviceMotion: DeviceMotion,
+    private alertController:AlertController
+    ) { 
   }
   
-  public iniciarSensado(){
-      // Get the device current acceleration
-      this.deviceMotion.getCurrentAcceleration().then(
-        (acceleration: DeviceMotionAccelerationData) => {
-          this.actualX = acceleration.x;
-          this.actualY = acceleration.y;
-          this.actualZ = acceleration.z;
-          console.log('x:',this.actualX,'y:',this.actualY,'z:',this.actualZ);
-        },
-        (error: any) => this.handleError
-      );
+  async presentAlert(header:string) {
+    const alert = await this.alertController.create({      
+      header: header,          
+      buttons: [
+        {text: 'Aceptar'}
+      ]    
+    });
+    await alert.present();
+  }
+  
+  private _handler:PluginListenerHandle ;
+
+
+  unsubscribe()
+  {
     
+    Plugins.Motion.removeAllListeners();
+    this._handler.remove();
   }
 
-  get movimientoVerticalDerecha():Posicion  {
-      return { vertical:this.VERTICAL, modificada:true, horizontal:this.DERECHA} as Posicion;
+  async watch(){            
+    this.pedirPermiso();
+    console.log('watch');
+    this.actualPosicion = {vertical:VerticalDirection.HORIZONTAL, horizontal:null, modificada:false};
+  
   }
 
-  get movimientoVerticalIzquierda():Posicion  {
-      return { vertical:this.VERTICAL, modificada:true, horizontal:this.IZQUIERDA} as Posicion;
+  get movimientoVerticalDerecha():Movement  {
+      return { vertical:VerticalDirection.VERTICAL, modificada:true, horizontal:HorizontalDirection.DERECHA} as Movement;
   }
 
-  get movimientoHorizontalDerecha():Posicion  {
-    return { vertical:this.HORIZONTAL, modificada:true, horizontal:this.DERECHA} as Posicion;
+  get movimientoVerticalIzquierda():Movement  {
+      return { vertical:VerticalDirection.VERTICAL, modificada:true, horizontal:HorizontalDirection.IZQUIERDA} as Movement;
   }
 
-  get movimientoHorizontalIzquierda():Posicion  {
-    return { vertical:this.HORIZONTAL, modificada:true, horizontal:this.IZQUIERDA} as Posicion;
+  get movimientoHorizontalDerecha():Movement  {
+    return { vertical:VerticalDirection.HORIZONTAL, modificada:true, horizontal:HorizontalDirection.DERECHA} as Movement;
+  }
+
+  get movimientoHorizontalIzquierda():Movement  {
+    return { vertical:VerticalDirection.HORIZONTAL, modificada:true, horizontal:HorizontalDirection.IZQUIERDA} as Movement;
   }
 
   handleError(error:any){
-    console.log(error)
+    this.presentAlert(error);
   }
 
-  determinarMovimiento(acceleration: DeviceMotionAccelerationData):Posicion{
-    let posicion:Posicion = {vertical:this.HORIZONTAL, horizontal:null, modificada:false};
+  /**   
+   * 
+   * @param DeviceMotionAccelerationData acceleration            
+   * -z a la portraid derecha
+   * +z a la portraid izquierda 
+   * +y a la derecha 
+   * -y a la izquierda 
+   * +x a parado
+   * -x a acostado
+   * @returns Movement
+  
+  determinarMovimiento(acceleration: DeviceMotionAccelerationData):Movement{
+  
+    let posicion:Movement = {vertical:VerticalDirection.HORIZONTAL, horizontal:null, modificada:false};
     console.log('x:',this.actualX,'y:',this.actualY,'z:',this.actualZ);
     if(
-      this.actualX.toFixed(5) != acceleration.x.toFixed(5)  ||
-      this.actualY.toFixed(5) != acceleration.y.toFixed(5) ||
-      this.actualZ.toFixed(5) != acceleration.z.toFixed(5) 
-    ){      
+      this.actualX.toFixed(2) != acceleration.x.toFixed(2)  ||
+      this.actualY.toFixed(2) != acceleration.y.toFixed(2) ||
+      this.actualZ.toFixed(2) != acceleration.z.toFixed(2) 
+    ){  
       posicion.modificada = true;
-      if(this.actualZ < acceleration.z ){
-        posicion.vertical = this.HORIZONTAL;
-      }
-      if(this.actualZ > acceleration.z ){
-        posicion.vertical =  this.VERTICAL;
-      }
-      
       if(this.actualX < acceleration.x ){
-        posicion.horizontal =  this.IZQUIERDA;
+        //+x
+        posicion.vertical = VerticalDirection.VERTICAL;
+      }else if(this.actualX > acceleration.x ){
+        //-x
+        posicion.vertical =  VerticalDirection.HORIZONTAL;
       }
-
-      if(this.actualY > acceleration.y ){
-        posicion.horizontal =  this.DERECHA;
+      //
+      if(this.actualY < acceleration.y ){
+        //+y
+        posicion.horizontal =  HorizontalDirection.DERECHA;
+      }else if(this.actualY > acceleration.y ){
+        //-y
+        posicion.horizontal =  HorizontalDirection.IZQUIERDA;
       }
       this.actualX = acceleration.x;
       this.actualY = acceleration.y;
       this.actualZ = acceleration.z;    
     }
     return posicion;
+   
   }
-
+   */
+/*
   watch():Observable<DeviceMotionAccelerationData>{    
-    this.subscription =  this.deviceMotion.watchAcceleration({frequency:10000});
-    return this.subscription;
+    return this.deviceMotion.watchAcceleration({frequency:1000});    
   }
+*/
 
+
+async pedirPermiso(){
+  try {
+    await DeviceMotionEvent.requestPermission().then((response)=>{
+        console.log('permition:',response);
+    });
+  } catch (error) {
+    
+  }
+  return true;
+}
   
 }

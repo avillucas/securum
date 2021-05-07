@@ -15,6 +15,7 @@ export class VibrationService {
 
   on(){
     if(!this.vibrando){
+      console.info('vibrando');
       this.vibration.vibrate(1000)
       this.vibrando = true;
     }
@@ -22,6 +23,7 @@ export class VibrationService {
 
   off(){
     if(this.vibrando){
+      console.info('frenando');
       this.vibration.vibrate(0)
       this.vibrando = false;
     }

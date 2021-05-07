@@ -10,6 +10,8 @@
 ## Ubicar los dispositivos conectados
 1. `adb devices` 
 2. `ionic capacitor run android --livereload --external`
+ionic cap copy
+ionic cap open android
 3. `ionic capacitor run android --livereload --external --public-host=192.168.0.32`
 ## Cambiar el id en todos 
 * android/app/buil.gradle

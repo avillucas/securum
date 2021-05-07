@@ -14,6 +14,7 @@ export class FlashService {
 
   on(){
     if(!this.prendido){
+      console.log('prendiendo flash');
       this.flashlight.switchOn(); 
       this.prendido = true;
     }
@@ -21,6 +22,7 @@ export class FlashService {
 
   off(){
     if(this.prendido){
+      console.log('apagando flash');
       this.flashlight.switchOff();
       this.prendido = false;
     }

@@ -86,4 +86,7 @@ export class ActivacionPage implements OnInit {
     this.router.navigateByUrl('/login', { replaceUrl: true });
   }
 
+  ngOnDestroy() {
+    this.alarmaService.desactivar();
+  }
 }

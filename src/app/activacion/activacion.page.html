@@ -44,14 +44,21 @@
 </ion-content>
 
 <ion-footer class="ion-no-border">
-  <!-- -->
+  <!-- 
   <ion-buttons [hidden]="!alarmaService.ocultarMensajeActivar" >
     <ion-button (click)="alarmaService.probarMovimientoVerticalDerecha()">VD</ion-button>
     <ion-button (click)="alarmaService.probarMovimientoVerticalIzquierda()">VI</ion-button>
     <ion-button (click)="alarmaService.probarMovimientoHorizontalDerecha()">HD</ion-button>
     <ion-button (click)="alarmaService.probarMovimientoHorizontalIzquierda()">HI</ion-button>
-  </ion-buttons>
-  <!-- -->
+  </ion-buttons>  
+  <ul>
+    <li>Actual</li>
+    <li>alpha: {{ this.alarmaService.actualAlpha}}</li>
+    <li>beta: {{ this.alarmaService.actualBeta}}</li>
+    <li>gamma: {{ this.alarmaService.actualGamma}}</li>
+    <li *ngIf="this.alarmaService.movimiento">position: {{this.alarmaService.movimiento.modificada}} , {{this.alarmaService.movimiento.horizontal}} , {{this.alarmaService.movimiento.vertical}}</li>
+  </ul>
+   -->
   <ion-button  [hidden]="alarmaService.sonando" (click)="logout()" color="primary" expand="full">
     <ion-icon name="log-out-outline"></ion-icon>
     <ion-label>Cerrar</ion-label>

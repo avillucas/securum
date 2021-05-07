@@ -36,8 +36,8 @@ export class AudioService {
   preload(){
       this._preload(this.ALARM_PLAY, 'assets/sonidos/alarma-activa.mp3');
       this._preload(this.ALARM_STOP, 'assets/sonidos/alarma-desactivar.mp3');
-      this._preload(this.ALARM_DERECHA, 'assets/sonidos/derecha.mp4');
-      this._preload(this.ALARM_IZQUIERDA, 'assets/sonidos/izquierda.mp4');
+      this._preload(this.ALARM_DERECHA, 'assets/sonidos/derecha.mp3');
+      this._preload(this.ALARM_IZQUIERDA, 'assets/sonidos/izquierda.mp3');
       this._preload(this.ALARM_ARRIBA, 'assets/sonidos/arriba.mp4');      
   }
 
