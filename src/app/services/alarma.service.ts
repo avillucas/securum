@@ -26,6 +26,8 @@ export class AlarmaService {
   public actualPosicion:Movement;
   
   public movimiento:Movement;
+  readonly CLASS_APAGADA = 'apagada';
+  public alarmaClass:string;
 
   constructor(    
     public animation:AnimationService,
@@ -38,7 +40,8 @@ export class AlarmaService {
     this._sonando = false;
     this._element = null;
     this._hideLogin = true;
-    this.actualAlpha = null;
+    this.actualAlpha = null;              
+    this.alarmaClass = this.CLASS_APAGADA;
   }
   
   set element(element:ElementRef){
@@ -79,6 +82,7 @@ export class AlarmaService {
   * Activar la alarma
   */
   activar(){    
+    this.alarmaClass = '';
     this._activa = true;
     console.log('activando sensor ....')    ;
     this.actualPosicion = {vertical:null, horizontal:null, modificada:false};
@@ -157,7 +161,7 @@ export class AlarmaService {
   }
 
   get ocultarMensajeADesactivarSirena():boolean {
-    return !this._activa;
+    return !this._activa || !this._hideLogin;
   }  
 
   /**
@@ -218,7 +222,8 @@ export class AlarmaService {
     this.animation.off()        
     this.flash.off();
     this.vibration.off()
-    this.actualAlpha = null;    
+    this.actualAlpha = null;   
+    this.alarmaClass= this.CLASS_APAGADA; 
     return true;
   }
 }

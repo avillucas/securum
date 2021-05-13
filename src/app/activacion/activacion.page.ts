@@ -12,8 +12,10 @@ import { Router } from '@angular/router';
 })
 export class ActivacionPage implements OnInit {  
 
+ 
   ionicForm: FormGroup;  
   @ViewChild('sirena', { read: ElementRef }) sirena: ElementRef;
+  
   //
   constructor(
     public alarmaService:AlarmaService,  
@@ -22,7 +24,7 @@ export class ActivacionPage implements OnInit {
     private loadingController: LoadingController,
     private authService: AuthapiService,
     public router:Router        
-  ) {                
+  ) {      
   }  
 
   ngAfterViewInit() {    
@@ -49,7 +51,7 @@ export class ActivacionPage implements OnInit {
 
   ngOnInit() {
     this.ionicForm = this.formBuilder.group({   
-      password: ['1111', [Validators.required, Validators.minLength(4)]],
+      password: ['', [Validators.required, Validators.minLength(4)]],
     })
   } 
 

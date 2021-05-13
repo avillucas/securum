@@ -2,7 +2,7 @@
   <ion-grid [hidden]=alarmaService.hideLogin >
     <ion-row>
       <ion-col >
-        <h1>Colocá tu contraseña de usuario para desactivar la alarma</h1>
+        <h1 style="font-size:0.9em;">Colocá tu contraseña de usuario <br> para desactivar  la alarma</h1>
       </ion-col>
     </ion-row>
     <ion-row>
@@ -27,17 +27,17 @@
   <ion-grid>   
     <ion-row [hidden]="alarmaService.ocultarMensajeActivar" >
       <ion-col >
-        <h1>¡Presioná la sirena para activar la alarma!</h1>
+        <h1 class="activarh1">¡Presioná la sirena para <br/>activar la alarma!</h1>
       </ion-col>
     </ion-row>
-    <ion-row [hidden]="alarmaService.ocultarMensajeADesactivarSirena" >
+    <ion-row [hidden]="alarmaService.ocultarMensajeADesactivarSirena " >
       <ion-col >
-        <h1>¡Presioná la sirena para desactivar la alarma!</h1>
+        <h1  class="desactivarh1">¡Presioná la sirena para <br/>desactivar la alarma!</h1>
       </ion-col>
     </ion-row>
     <ion-row>
       <ion-col>        
-        <ion-img #sirena src="assets/sirena.png"  color="none" alt="Estado" (click)="cambiarEstadoAlarma()" ></ion-img>        
+        <ion-img #sirena src="assets/sirena.png"  color="none" alt="Estado" (click)="cambiarEstadoAlarma()" [class]="this.alarmaService.alarmaClass" ></ion-img>        
       </ion-col>
     </ion-row>
   </ion-grid>
@@ -59,9 +59,9 @@
     <li *ngIf="this.alarmaService.movimiento">position: {{this.alarmaService.movimiento.modificada}} , {{this.alarmaService.movimiento.horizontal}} , {{this.alarmaService.movimiento.vertical}}</li>
   </ul>
    -->
-  <ion-button  [hidden]="alarmaService.sonando" (click)="logout()" color="primary" expand="full">
+  <ion-button  [hidden]="alarmaService.sonando" (click)="logout()" color="danger" expand="full">    
+    <ion-label>Cerrar sesión</ion-label>
     <ion-icon name="log-out-outline"></ion-icon>
-    <ion-label>Cerrar</ion-label>
   </ion-button>
 
 </ion-footer>
